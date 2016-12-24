@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "NetCore.Core.Entities": "1.0.0-*",
+    "NETStandard.Library": "1.6.1",
+    "Newtonsoft.Json": "9.0.1",
+    "System.Collections.NonGeneric": "4.3.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
