@@ -7,11 +7,16 @@ using NetCore.Core.Entities.Identity.Role;
 using Microsoft.Extensions.Options;
 using NetCore.Core.Entities;
 using System.Data;
+using NetCore.Core.Entities.ConfigManager;
 
 namespace NetCore.Infrastructure.Data.Identity
 {
     public class RoleRepository : BaseDAC, IRoleRepository
     {
+        public RoleRepository(IOptions<ConfigEntity> option) : base(option)
+        {
+        }
+
         public async Task CreateAsync(Role role)
         {
             using (IDbConnection db = base.GetConnection())

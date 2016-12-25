@@ -8,11 +8,17 @@ using NetCore.Interface.Repository.Identity;
 using NetCore.Core.Entities.Identity.Claim;
 using System.Data;
 using NetCore.Core.Entities.Identity.User;
+using Microsoft.Extensions.Options;
+using NetCore.Core.Entities.ConfigManager;
 
 namespace NetCore.Infrastructure.Data.Identity
 {
     public class UserClaimRepository : BaseDAC, IUserClaimRepository
     {
+        public UserClaimRepository(IOptions<ConfigEntity> option) : base(option)
+        {
+        }
+
         public async Task DeleteAsync(UserClaim userClaim)
         {
             using (IDbConnection db = base.GetConnection())

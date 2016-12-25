@@ -12,6 +12,8 @@ using NetCore.Core.Entities;
 using NetCore.Infrastructure.Data.Identity;
 using NetCore.Core.Framework;
 using System.IO;
+using Microsoft.Extensions.Options;
+using NetCore.Core.Entities.ConfigManager;
 
 namespace NetCore.Presentation.CustomerWeb
 {
@@ -41,17 +43,28 @@ namespace NetCore.Presentation.CustomerWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var userStore = new IdentityUserStore(
-                new UserLoginRepository(),
-                new UserRepository(),
-                new UserClaimRepository(),
-                new RoleRepository(),
-                new UserRoleRepository());
-            var roleStore = new IdentityRoleStore(new RoleRepository());
+
+
+            services.Configure<ConfigEntity>(Configuration);
             var userPrincipalFactory = new IdentityUserPrincipalFactory();
             services.AddSingleton<IUserClaimsPrincipalFactory<User>>(userPrincipalFactory);
-            services.AddSingleton<IUserStore<User>>(userStore);
-            services.AddSingleton<IRoleStore<Role>>(roleStore);
+            services.AddSingleton<IUserStore<User>>(provider =>
+            {
+                var options = provider.GetService<IOptions<ConfigEntity>>();
+                var userStore = new IdentityUserStore(
+                new UserLoginRepository(options),
+                new UserRepository(options),
+                new UserClaimRepository(options),
+                new RoleRepository(options),
+                new UserRoleRepository(options));
+                return userStore;
+            });
+            services.AddSingleton<IRoleStore<Role>>(provider =>
+            {
+                var options = provider.GetService<IOptions<ConfigEntity>>();
+                var roleStore = new IdentityRoleStore(new RoleRepository(options));
+                return roleStore;
+            });
 
             services.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders();

@@ -6,11 +6,17 @@ using Dapper;
 using NetCore.Interface.Repository.Identity;
 using NetCore.Core.Entities.Identity.User;
 using System.Data;
+using Microsoft.Extensions.Options;
+using NetCore.Core.Entities.ConfigManager;
 
 namespace NetCore.Infrastructure.Data.Identity
 {
     public class UserLoginRepository : BaseDAC, IUserLoginRepository
     {
+        public UserLoginRepository(IOptions<ConfigEntity> option) : base(option)
+        {
+        }
+
         public async Task DeleteAsync(UserLogin userLogin)
         {
             using (IDbConnection db = base.GetConnection())

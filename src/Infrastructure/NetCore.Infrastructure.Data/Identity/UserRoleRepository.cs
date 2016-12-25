@@ -8,11 +8,17 @@ using NetCore.Interface.Repository.Identity;
 using NetCore.Core.Entities.Identity.Role;
 using System.Data;
 using NetCore.Core.Entities.Identity.User;
+using Microsoft.Extensions.Options;
+using NetCore.Core.Entities.ConfigManager;
 
 namespace NetCore.Infrastructure.Data.Identity
 {
     public class UserRoleRepository : BaseDAC, IUserRoleRepository
     {
+        public UserRoleRepository(IOptions<ConfigEntity> option) : base(option)
+        {
+        }
+
         public async Task DeleteAsync(UserRole userRole)
         {
             using (IDbConnection db = base.GetConnection())

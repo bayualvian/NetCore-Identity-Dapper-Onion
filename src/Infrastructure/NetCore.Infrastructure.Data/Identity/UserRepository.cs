@@ -8,11 +8,16 @@ using NetCore.Core.Entities.Identity.User;
 using Microsoft.Extensions.Options;
 using NetCore.Core.Entities;
 using System.Data;
+using NetCore.Core.Entities.ConfigManager;
 
 namespace NetCore.Infrastructure.Data.Identity
 {
     public class UserRepository : BaseDAC, IUserRepository
     {
+        public UserRepository(IOptions<ConfigEntity> option) : base(option)
+        {
+        }
+
         public async Task CreateAsync(User user)
         {
             using (IDbConnection db = base.GetConnection())
