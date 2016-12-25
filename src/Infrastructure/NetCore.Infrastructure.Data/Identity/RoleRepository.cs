@@ -21,7 +21,7 @@ namespace NetCore.Infrastructure.Data.Identity
         {
             using (IDbConnection db = base.GetConnection())
             {
-                await db.ExecuteAsync(@"INSERT INTO [dbo].[Roles]([Id],[Name]) VALUES(@Id,@Name)", role);
+                await db.ExecuteAsync(@"INSERT INTO [dbo].[Roles]([Name]) VALUES(@Name)", role);
             }
         }
 
@@ -46,7 +46,7 @@ namespace NetCore.Infrastructure.Data.Identity
 
         public async Task<Role> FindByName(string roleName)
         {
-            if (string.IsNullOrWhiteSpace(roleName))
+            if (!string.IsNullOrWhiteSpace(roleName))
             {
                 using (IDbConnection db = base.GetConnection())
                 {
